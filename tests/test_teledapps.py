@@ -35,9 +35,9 @@ def test_get_active_account():
     assert label == 'label'
 
 
-def test_dapp_default_keyboard():
-    from teledapps.platform import helpers
+def test_tokenlists():
+    from teledapps import get_token_list
 
+    tokenlist = get_token_list('1inch')
 
-# # def test_stages():
-# #     print(teledapps.platform.helpers.basic_stage)
+    assert tokenlist['name'] == '1inch'
