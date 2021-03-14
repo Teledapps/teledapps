@@ -1,0 +1,17 @@
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and publish to pypi
+      uses: JRubics/poetry-publish@v1
+      with:
+        pypi_token: ${{ secrets.PYPI_TOKEN }}
