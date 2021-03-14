@@ -22,3 +22,7 @@ class Platform:
     @property
     def stages(self):
         return self.connector.stages
+
+    @property
+    def bot_default_keyboard(self):
+        return self.connector.bot_default_keyboard

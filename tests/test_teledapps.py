@@ -21,7 +21,7 @@ def test_passport():
     assert passport.categories == []
 
 
-def test_get_active_account():
+def test_get_platform():
     from teledapps.platform import Platform
 
     os.environ['TELEDAPPS_ACCOUNT_ADDRESS'] = 'address'
@@ -33,6 +33,8 @@ def test_get_active_account():
 
     assert address == 'address'
     assert label == 'label'
+
+    assert platform.bot_default_keyboard == []
 
 
 def test_tokenlists():

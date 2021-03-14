@@ -74,3 +74,7 @@ class LocalConnector:
 
         logger.info('Starting bot locally')
         bot.run()
+
+    @property
+    def bot_default_keyboard(self):
+        return []
