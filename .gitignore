@@ -2,5 +2,5 @@ venv/
 dist/
 .pytest_cache/
 tests/__pycache__
-teledapps/__pycache__
+teledapps/__pycache__/
 __pycache__
