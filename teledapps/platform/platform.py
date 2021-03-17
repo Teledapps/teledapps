@@ -1,3 +1,5 @@
+import os
+import importlib
 from .connector import LocalConnector
 
 
@@ -13,11 +15,10 @@ class Platform:
         return self.connector.web3
 
     def register_bot(self, passport, bot):
-        self.connector.register_bot(passport, bot)
+        return self.connector.register_bot(passport, bot)
 
-    @property
-    def dapp_callback_data(self):
-        return self.connector.dapp_callback_data
+    def run(self):
+        return self.connector.run()
 
     @property
     def stages(self):
@@ -26,3 +27,7 @@ class Platform:
     @property
     def bot_default_keyboard(self):
         return self.connector.bot_default_keyboard
+
+    @property
+    def bot_inline_id(self):
+        return self.connector.bot_inline_id

@@ -8,9 +8,7 @@ from telegram import (
 )
 
 import os
-import re
 
-from ..callback_data import CallbackData
 from ..actions import Command
 from ..utils import logger
 
@@ -21,6 +19,10 @@ class LocalConnector:
             os.environ.get('TELEDAPPS_ACCOUNT_ADDRESS', '0xbe0eb53f46cd790cd13851d5eff43d12404d33e8'),
             os.environ.get('TELEDAPPS_ACCOUNT_LABEL', 'Test account')
         ]
+
+        self.passport = None
+        self.bot = None
+        self.callback_data = None
 
     def get_active_account(self, user_id):
         return self.active_account
@@ -35,46 +37,46 @@ class LocalConnector:
         return Web3(Web3.HTTPProvider(rpc))
 
     @property
-    def dapp_callback_data(self):
-        return CallbackData(
-            pattern='dapp-*',
-            encoder=lambda dapp_id: f'dapp-{dapp_id}',
-            decoder=lambda data: int(re.search('dapp-(?P<id>.*)', data).group('id'))
-        )
-
-    @property
     def stages(self):
         return AttrDict({
             'basic': 0
         })
 
     def register_bot(self, passport, bot):
+        self.passport = passport
+        self.bot = bot
+
+    def run(self):
         token = os.environ.get('TELEDAPPS_BOT_TOKEN')
 
         if token is None:
             raise Exception('For local run, specify Telegram bot token in TELEDAPPS_BOT_TOKEN')
 
         # Add simple entry point
-        @bot.entry_point(action=Command('start'))
+        @self.bot.entry_point(action=Command('start'))
         def handle(update: Update, context: CallbackContext):
             keyboard = [
                 [
-                    InlineKeyboardButton(f'{passport.name}', callback_data=self.dapp_callback_data.encoder(111))
+                    InlineKeyboardButton(f'{self.passport.name}', callback_data=self.bot_inline_id)
                 ]
             ]
 
             update.message.reply_text(
-                f'Testing Teledapps bot locally. Categories - {",".join(passport.categories)}',
+                f'Testing Teledapps bot locally. Categories - {",".join(self.passport.categories)}',
                 reply_markup=InlineKeyboardMarkup(keyboard)
             )
 
             return self.stages.basic
 
-        bot.setup(token)
+        self.bot.setup(token)
 
         logger.info('Starting bot locally')
-        bot.run()
+        self.bot.run()
 
     @property
     def bot_default_keyboard(self):
         return []
+
+    @property
+    def bot_inline_id(self):
+        return 'dapp-111'
