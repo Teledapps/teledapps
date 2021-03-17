@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "teledapps"
-version = "0.2.4"
+version = "0.2.5"
 description = "Python package for building Telegram bots, compatible with Teledapps"
 authors = ["Sergey P <pavlovdog.moscow@gmail.com>"]
 
